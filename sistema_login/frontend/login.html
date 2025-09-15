@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Login</title>
+</head>
+<body>
+  <h2>Login</h2>
+  <form onsubmit="logar(event)">
+    <input type="text" id="username" placeholder="Usuário" required><br><br>
+    <input type="password" id="senha" placeholder="Senha" required><br><br>
+    <button type="submit">Entrar</button>
+  </form>
+
+  <script>
+    async function logar(event) {
+      event.preventDefault();
+      const username = document.getElementById('username').value;
+      const senha = document.getElementById('senha').value;
+
+      try {
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, senha })
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          alert(result.message || 'Login bem-sucedido!');
+        } else {
+          alert(result.error || 'Credenciais inválidas');
+        }
+      } catch (err) {
+        alert('Erro na conexão com o servidor: ' + err);
+      }
+    }
+  </script>
+</body>
+</html>
